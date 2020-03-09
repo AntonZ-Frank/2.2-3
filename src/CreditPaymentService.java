@@ -1,9 +1,12 @@
 public class CreditPaymentService {
-    public double calculate(double years) {
-        double month = years * 12;  // Расчет количества месяцев
-        double degree = Math.pow(1.008325, month); // Расчет степени для формулы
-        double payment = 1_000_000 * ((0.008325 * degree) / (degree - 1)); // формула ануитетного платежа за месяц
-        payment = Math.round(payment); // Округляем
+    public double calculate(double years, double amounthCredit, double percentCredit) {
+        double monthinYear = 12;                                        //месяце в году.
+        double month = years * monthinYear;                             // Расчет количества месяцев, в течении которых выплачивается кредит.
+        double percentRatio = percentCredit / 100 / monthinYear;        // месячная % ставка по кредиту.
+        double degree = Math.pow(1 + percentRatio, month);              // Расчет степени в формуле коэф. аннуитета
+        double annuityRatio = ((percentRatio * degree) / (degree - 1)); // коэф. аннуитета
+        double payment = amounthCredit * annuityRatio;                  // ежемесячный платеж
+        payment = Math.round(payment);                                  // Округляем
         return payment;
     }
 }
